@@ -1,0 +1,40 @@
+version: "3.8"
+services:
+  db: 
+    image: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres1234
+    volumes:   
+      - /Users/hathawayj/docker/postgresql:/var/lib/postgresql/data 
+      - /Users/hathawayj/docker/extshare:/extshare 
+    ports:
+      - '5432:5432'
+    networks:
+      - n451
+
+  spark:
+    image: jupyter/all-spark-notebook
+    depends_on:
+      - db
+    ports:
+      - '8888:8888'
+      - '4040:4040' 
+      - '4041:4041'
+    volumes:
+      - /Users/hathawayj/docker:/home/jovyan/cse451
+    networks:
+      - n451
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    ports:
+      - '8080:8080'
+    networks:
+      - n451
+
+networks:
+  n451:

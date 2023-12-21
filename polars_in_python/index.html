@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to Polars (and Plotly)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+        color:darkslategrey;
+      }
+      h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .font40 {
+        font-size: 40px;
+      }
+      .font30 {
+        font-size: 30px;
+      }
+      .font20 {
+        font-size: 20px;
+      }
+      .remark-code, .remark-inline-code {
+         font-family: 'Ubuntu Mono';
+         font-size: 20px;
+         }
+            /* Two-column layout */
+      .left-column {
+        color: #000;
+        width: 50%;
+        float: left;
+      }
+      .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 50%;
+        float: right;
+        padding-top: 2em;
+      }
+      .right-column h2:last-of-type, .right-column h3:last-child {
+          color: #000;
+        }
+      .inverse {
+        background: #272822;
+        color: #e4e4e1;
+        text-shadow: 0 0 20px #333;
+      }
+      .inverse h1, .inverse h2, .inverse h3 {
+        color: #f3f3f3;
+        line-height: 0.8em;
+      }
+      .lightfont {color:rgb(129, 126, 126);
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, font30
+
+# Introduction to Polars (and Plotly) in Python
+
+J. Hathaway - Data Science Program Chair at BYU-I
+
+---
+class: font30
+
+# Disclaimers
+
+I am focusing on modern tools for data science in Python
+</br></br>
+_Polars over Pandas and Plotly over Matplotlib._
+</br></br>
+These modern tools reflect the best of
+
+- declarative programming (task focused programming)
+- clean grammar (language abstraction that allows intuitive but complex actions)
+- industry respect (these tools are very popular for their quality and have rapid growth)
+
+???
+
+- Highlight that Pandas is still the industry standard but that the grammar and speed of polars should compete with Pandas in the long run.
+- Plotly is probably close to the industry standard. However, Matplotlib is the default plotting environment for many data science packages.
+
+---
+class: font40
+# Agenda
+
+Exemplify the data science process - Extract, Transform, Load, Analyze
+
+1. Introduction and Set-up (10 minutes)
+2. Polars for data munging (40 minutes)
+3. Break (5 minutes)
+4. Plotly for data visualization (35 minutes)
+
+---
+class: font30
+# J. Hathaway
+
+Data Scientists with ~20 years of industry experience and 8 years in Academia.  Undergraduate degree in Economics (University of Utah) and a graduate degree in Statistics (BYU).
+
+![:scale 50%](https://raw.githubusercontent.com/hathawayj/ghana_datascience/master/img/family_2020.png)
+
+---
+class: font40
+# Checking our installation
+
+1. [Python Installed](https://www.python.org/downloads/)
+2. [VS Code Installed](https://code.visualstudio.com/download)
+3. [Python VS Code Extension Installed](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+4. Python packages installed.
+      ```bash
+      pip install polars plotly statsmodels pyarrow
+      ```
+      
+      ```bash
+      pip3 install polars plotly statsmodels pyarrow
+      ```
+
+---
+class: font20
+# Introduction to Polars and Data Munging (speed)
+
+> Polars is a lightning fast DataFrame library/in-memory query engine. Its embarrassingly parallel execution, cache efficient algorithms and expressive API makes it perfect for efficient data wrangling, data pipelines, snappy APIs and so much more. Polars is about as fast as it gets, see the results in the [H2O.ai benchmark](https://h2oai.github.io/db-benchmark/).
+> </br>
+> [Polars Website](https://www.pola.rs/)
+
+![:scale 60%](https://raw.githubusercontent.com/pola-rs/polars-static/master/logos/polars_github_logo_rect_dark_name.svg)
+
+---
+
+## What is Polars?
+
+> The goal of `Polars` is to provide a lightning fast `DataFrame` library that:
+
+> - Utilizes all available cores on your machine.
+> - Optimizes queries to reduce unneeded work/memory allocations.
+> - Handles datasets much larger than your available RAM.
+> - Has an API that is consistent and predictable.
+> - Has a strict schema (data-types should be known before running the query).
+> 
+> Polars is written in Rust which gives it C/C++ performance and allows it to fully control performance critical parts in the query engine.
+> 
+> As such `Polars` goes to great lengths to:
+> 
+> - Reduce redundant copies.
+> - Traverse memory cache efficiently.
+> - Minimize contention in parallelism.
+> - Process data in chunks.
+> - Reuse memory allocations.
+> 
+> [Polars Documentation](https://pola-rs.github.io/polars-book/user-guide/)
+
+Their documenation compares Polars to some other Python data science tools
+
+---
+
+# Introduction to Polars and Data Munging (declarative API)
+
+Polars functions (Contexts & Expressions) are human readable and they align with standard SQL methods as well as the very popular big data package [PySpark](https://www.databricks.com/glossary/pyspark).
+
+## Contexts
+
+- __Selection:__ `df.select([..])`, `df.with_columns([..])`
+- __Filtering:__ `df.filter()`
+- __Groupby/Aggregation:__ `df.groupby(..).agg([..])`
+
+## Expressions
+
+```python
+new_df = df.select(
+  pl.col("names").n_unique().alias("unique"),
+  pl.approx_unique("names").alias("unique_approx"),
+  (pl.col("nrs").sum() + 5).alias("nrs + 5"),
+  pl.col("integers").cast(pl.Float32).alias("integers_as_floats"),
+  pl.col("animal").str.n_chars().alias("letter_count")
+)
+```
+
+---
+
+class: font30
+# Polars programming
+
+
+Now let's practice using Polars with our installation of Python
+
+1. Read data, melt data, and save as `.parquet` (01_read.py)
+2. Munge data for visualization (02_munge.py)
+
+![:scale 75%](https://raw.githubusercontent.com/pola-rs/polars-static/master/logos/polars_github_logo_rect_dark_name.svg)
+
+---
+class: font20
+# Introduction to Parquet files and Arrow
+
+When users ask for data or when many institutions share data the files are usually some type of text file (`.txt`, `.csv`, `.tsv`) or an Excel file. The most ubiquitous format is `.csv`. However, these formats limit effective data handling.  We want a format that stores small, reads fast, and maintains variable types. The [Apache Arrow project](https://arrow.apache.org/) facilitates the goal with the `.parquet` and `.feather` formats and their respective packages for leveraging those formats.
+
+__Arrow is primarily an in-memory format, whereas Parquet is a storage format.__
+
+The following table from the [openbridge blog](https://blog.openbridge.com/how-to-be-a-hero-with-powerful-parquet-google-and-amazon-f2ae0f35ee04) provides a strong example of the benefits of these new formats.
+
+![:scale 95%](https://raw.githubusercontent.com/hathawayj/ghana_datascience/master/img/csv_parquet.png)
+
+
+---
+class: font20
+# Introduction to Data Visualization
+
+Our eyes are drawn to [colors and patterns](https://www.tableau.com/learn/whitepapers/tableau-visual-guidebook). We can quickly identify red from blue, and squares from circles. Our culture is visual, including everything from art and advertisements to TV and movies. Data visualization is another form of visual art that grabs our interest and keeps our eyes on the message.
+
+[Tableau Reference](https://www.tableau.com/learn/articles/data-visualization)
+
+
+.left-column[
+  </br>
+### Advantages of data visualization:
+
+- Easily sharing information.
+- Interactively explore opportunities.
+- Visualize patterns and relationships.
+]
+
+.right-column[
+### Disadvantages:
+
+- Biased or inaccurate information.
+- Correlation doesn’t always mean causation.
+- Core messages can get lost in translation.
+]
+
+
+---
+class: font20
+# Introduction to __Plotly__ for Data Visualization
+
+The Plotly Python package leverages the plotly.js JavaScript library to enables Python users to create beautiful interactive web-based visualizations. Plotly.js is built on top of d3.js and stack.gl, Plotly.js is a high-level, declarative charting library. plotly.js ships with over 40 chart types, including 3D charts, statistical graphs, and SVG maps.
+
+![:scale 50%](https://raw.githubusercontent.com/hathawayj/ghana_datascience/master/img/plotly_charts.png)
+
+
+---
+class: font30
+# Plotly programming
+
+Now let's practice using Plotly with our installation of Python
+
+1. Plotly practice (03_begin_plotly.py)
+2. Data visualization with our munged data (03_explore.py)
+
+```python
+import plotly.express as px
+df = px.data.iris() # iris is a pandas DataFrame
+fig = px.scatter(df, x="sepal_width", y="sepal_length")
+fig.show()
+```
+
+```python
+import plotly.express as px
+df = px.data.gapminder().query("continent == 'Oceania'")
+fig = px.line(df, x='year', y='lifeExp', color='country', markers=True)
+fig.show()
+```
+
+---
+class: font40
+# Next Steps
+
+1. Program your day (incorporate programming into your daily work)
+2. Display your talent -- [Github.com](https://github.com/hathawayj)
+3. Offer your services -- Find small projects to do for friends and contacts
+4. Apply for jobs -- [LinkedIn](https://www.linkedin.com/jobs/search/?currentJobId=3636093741&geoId=104353902&keywords=data%20science&location=Greater%20Accra%20Region%2C%20Ghana&originalSubdomain=gh&refresh=true)
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      remark.macros.upper = function () {
+        // `this` is the value in the parenthesis, or undefined if left out
+        return this.toUpperCase();
+      };
+
+      remark.macros.random = function () {
+        // params are passed as function arguments: ["one", "of", "these", "words"]
+        var i = Math.floor(Math.random() * arguments.length);
+        return arguments[i];
+      };
+
+      remark.macros.scale = function (percentage) {
+        var url = this;
+        return '<img src="' + url + '" style="width: ' + percentage + '" />';
+      };
+
+      var slideshow = remark.create({
+        ratio: "16:9",
+        highlightLanguage: 'javascript',
+        highlightStyle: 'monokai'
+       });
+    </script>
+  </body>
+</html>

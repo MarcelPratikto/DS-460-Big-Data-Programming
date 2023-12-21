@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="github-repo">Github Repo</h1>
+<p><a href="https://github.com/MarcelPratikto/app_challenge_membership_fa23">MarcelPratikto/app_challenge_membership_fa23</a></p>
+<h1 id="how-to-run">How to Run</h1>
+<h3 id="docker-information">Docker Information</h3>
+<p>Within this repository, you can simply run <code>docker compose up</code> to leverage the <code>docker-compose.yaml</code> with your local folder synced with the container folder where the streamlit app is running.</p>
+<p>Additionally, you can use <code>docker build -t streamlit .</code> to use the <code>Dockerfile</code> to build the image and then use <code>docker run -p 8501:8501 -v &quot;$(pwd):/app:rw&quot; streamlit</code> to start the container with the appropriate port and volume settings.</p>
+<p>We currently use <code>python:3.11.6-slim</code> in our <a href="Dockerfile">Dockerfile</a>.  You can change to <code>FROM quay.io/jupyter/minimal-notebook</code> to use the <a href="https://quay.io/organization/jupyter">minimal Jupyter notebook</a></p>
+<h1 id="feature-challenge">Feature Challenge</h1>
+<p>Spatial Map is included on my app</p>
+<p>Code is included in <a href="feature_scripts/marcel_pratikto_features.html">feature_scripts/marcel_pratikto_features</a></p>
+<h1 id="code-evaluation-challenge">Code Evaluation Challenge</h1>
+<h2 id="cmd-5">Cmd 5</h2>
+<details>
+<summary>What the code is doing (CLICK TO EXPAND)</summary>
+<p>The code starts by creating a few dataframes that combines spatial data with poi data, filter down to the places in Idaho. It also filters down the pattern and tract_table dataframes to Idaho. The result from the filters are stored into their own dataframe: poi_idaho, spatial_idaho, pattern_idaho, and tract_table.</p>
+<p>The end of the code starts by creating a new sql database called chapel. All the dataframes mentioned above, in addition to a few more dataframes created in the Cmd before Cmd 5, will be stored as tables in the chapel database.</p>
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+Since the spatial dataframe is joined with poi, based on the placekey in the spatial dataframe, then filtered to just Idaho, I'm not sure if there's a need to create poi_idaho.
+</details>
+<h2 id="cmd-22">Cmd 22</h2>
+<details>
+<summary>What the code is doing</summary>
+This code is gathering all the chapels where Sunday is the most popular day, followed by Monday for all places in the US. It takes data from chapel.pattern and saves the table at chapel.use_pattern_chapel.
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h2 id="cmd-50">Cmd 50</h2>
+<details>
+<summary>What the code is doing</summary>
+Takes the chapel.chapel_nearest table and combines it with chapel.use_pattern_chapel. It makes sure that the address of the data from safegraph aligns with the data from the church's web scrape within 0.0003 of some measure of distance in the same city. Then it filters down the data again to chapels in which Sunday is the most popular day.
+</details>
+<details>
+<summary>Bugs found</summary>
+There are some values where Sunday ranking is null, but it's still included in the code
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h2 id="cmd-60">Cmd 60</h2>
+<details>
+<summary>What the code is doing</summary>
+Creates min, median, and max of the estimated number of visitors on Sunday for each chapels. It calculates this by taking the data from the span of a year.
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h2 id="cmd-64">Cmd 64</h2>
+<details>
+<summary>What the code is doing</summary>
+Removes unique visits from the estimated Sunday visitors. If that person visited a chapel that is further than two standard deviations from the average distance to the nearest chapel, then that visit isn't counted as part of the regular Sunday attendance for that county.
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h2 id="cmd-66">Cmd 66</h2>
+<details>
+<summary>What the code is doing</summary>
+Expands upon the active members estimate from a county level to a tract level.
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h2 id="cmd-74">Cmd 74</h2>
+<details>
+<summary>What the code is doing</summary>
+Creates the final table that stores the population, number of LDS members, ratio of LDS members, and ratio of religious members. It does a simple division to get the ratio of LDS members and ratio of the population that are LDS. It stores this table in membership.county_active_population_ldscensus.
+</details>
+<details>
+<summary>Bugs found</summary>
+N/A
+</details>
+<details>
+<summary>Code improvements</summary>
+N/A
+</details>
+<h1 id="vocabularylingo-challenge">Vocabulary/Lingo Challenge</h1>
+<ol>
+<li>Explain the added value of using DataBricks in your Data Science process (using text, diagrams, and/or tables).</li>
+</ol>
+<p>DataBricks is amazing at handling really big data. DataBricks uses Spark SQL and PySpark to process its queries, and does it all in a nifty web GUI. This can be good because it handles all the messy initialization steps of setting up and using Spark SQL and PySpark. However, it can become a hassle whenever we need to download / store the notebooks, csv, parquet, or any other files to our local system.</p>
+<p>In our projects, we have been able to use DataBricks to create our own features for all tracts in the US. For me, the easy feature was ratio of female to male and the complex feature was the estimated average house price. Trying to calculate my features in SQL, Polars, or Pandas would take around 30 minutes to an hour. I know this because I tried using sql to convert from my Idaho tract estimates to all US tracts. When I used Spark SQL and PySpark in DataBricks, the computations took about two minutes.</p>
+<p>The only drawback to DataBricks that it is overkill for anything else other than big data. Why spend the extra effort of setting up compute, and programming the notebook in a different query language for small datasets that could easily be programmed and ran in VS Code?</p>
+<ol start="2">
+<li>Compare and contrast PySpark to either Pandas or the Tidyverse (using text, diagrams, and/or tables).</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+<th>Scale</th>
+<th>Performance</th>
+<th>Ease of Use</th>
+<th>Visualization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PySpark</td>
+<td>Distributed data processing on big data clusters using Apache Spark</td>
+<td>Designed for big data, distributed computing</td>
+<td>Scales horizontally, handles large datasets efficiently</td>
+<td>More complex due to distributed nature, steeper learning curve</td>
+<td>Limited native visualization, often relies on external tools like Matplotlib or Seaborn</td>
+</tr>
+<tr>
+<td>Pandas</td>
+<td>Data manipulation and analysis for smaller datasets that fit into memory</td>
+<td>Suitable for small to medium-sized datasets</td>
+<td>Limited by available memory, not optimized for distributed computing</td>
+<td>Intuitive for data manipulation, suitable for quick analysis</td>
+<td>Built-in visualization using Matplotlib and Seaborn</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Explain Docker to somebody intelligent but not a tech person (using text, diagrams, and/or tables).</li>
+</ol>
+<p>Docker is a way to run the contents of someone's computer to yours. It takes only the necessary parts of their computer and creates an image that can be copied and ran on your computer. This allows you to run programs that might not run on your computer because you are missing important documents. With Docker, you don't have to care about the missing documents, the program will run from the Docker image.</p>
+
+</body>
+</html>
